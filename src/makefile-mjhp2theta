@@ -1,0 +1,29 @@
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Wextra -g -I/share/apps/dfprograms/fftw3/include -I/home/lcgarman/gsl/include 
+LDFLAGS = -Wl,-rpath,/home/lcgarman/gsl/lib -L/share/apps/dfprograms/fftw3/lib -L/home/lcgarman/gsl/lib
+LIBS = -lgsl -lgslcblas -lm -lfftw3 -mcmodel=medium 
+
+# Source files
+SRCS = mjhp2theta_main.c globals.c structures.c allocate_memory.c cell_parameters.c fftw_functions.c read_binary_v10.c paw_parameters.c rwa_functions.c twotheta_functions.c energy_functions.c extra_functions.c  mjhp_2theta_energy.c hkl_functions.c
+
+# Object files
+OBJS = $(SRCS:.c=.o)
+
+# Executable name
+TARGET = paw_mjhp2theta 
+
+all: $(TARGET)
+
+# Linking rule to create the executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LIBS) -o $(TARGET)
+
+# Compilation rule for object files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean rule
+clean:
+	rm -f $(OBJS)
+
