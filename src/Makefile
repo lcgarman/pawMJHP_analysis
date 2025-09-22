@@ -28,7 +28,7 @@ TARGET_2THETA = paw_mjhp2theta
 TARGET_HKL = paw_mjhpHKL 
 TARGET_DEN = paw_mjhpHKL_density  
 
-all: $(TARGET_2THETA) $(TARGET_HKL) $(TARGET_PREP)
+all: $(TARGET_2THETA) $(TARGET_HKL) $(TARGET_PREP) $(TARGET_DEN)
 
 # Linking rule to create the prep_paw2theta 
 $(TARGET_PREP): $(OBJS_PREP)
