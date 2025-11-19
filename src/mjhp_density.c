@@ -36,6 +36,7 @@ void mjhpHKL_density(NumberGrid *GRD, Wavefunction *WFK, UnitCell * UC, Symmetry
   int MJ_H, MJ_K, MJ_L; /*HKL indices of interest*/
   int nHKL; /*number of symmetry-equivalent HKL indices*/
   int HKL_mult; /*multiplicity of HKL*/
+  double norm_HKL_mult; /*normalized multiplicity of HKL*/
   double minr, maxr; /*defines the mjhp shell to survey reciprocal space*/
   double mag_diff; /*magnitude of diference bw the pws*/
   double exponent; /*exponential part of the broadening*/
@@ -174,7 +175,7 @@ void mjhpHKL_density(NumberGrid *GRD, Wavefunction *WFK, UnitCell * UC, Symmetry
 		}
         /*if no possible pw pairing skip this pw*/
 		if (HKL_mult == 0) continue;
-		
+
 		/*make hkl grid all (+) numbers*/
 		if (h1<0) hpos = h1 + ngfftx;
 		else hpos = h1;
@@ -193,7 +194,9 @@ void mjhpHKL_density(NumberGrid *GRD, Wavefunction *WFK, UnitCell * UC, Symmetry
 	  //occ = WFK->occ[kptno][band];
 	  occ = 1;
       wtk = WFK->wtk[kptno];
-      printf("\t\twtk = %lf\t HKL_mult = %d\n", wtk, HKL_mult);
+      norm_HKL_mult = 1.0;
+//      norm_HKL_mult = (double)HKL_mult / (double)nHKL;
+      printf("\t\twtk = %lf\t HKL_mult = %d\t norm_HKL_mult = %lf\n", wtk, HKL_mult, norm_HKL_mult);
 
       /*unwrap fft grid in direct space*/
 	  for(jx=0;jx<ngfftx;jx++) {
@@ -203,8 +206,8 @@ void mjhpHKL_density(NumberGrid *GRD, Wavefunction *WFK, UnitCell * UC, Symmetry
             re_grid = grid_out[o_index][REAL];
             im_grid = grid_out[o_index][IMAG];
             c1 = gsl_complex_rect(re_grid, im_grid);
-            real_grid[jx][jy][jz] += HKL_mult*broad*wtk*occ*gsl_complex_abs2(c1)/UC->bohr_cellV;
-            coeff_total += HKL_mult*broad*wtk*occ*gsl_complex_abs2(c1)/UC->bohr_cellV;
+            real_grid[jx][jy][jz] += norm_HKL_mult*broad*wtk*occ*gsl_complex_abs2(c1)/UC->bohr_cellV;
+            coeff_total += norm_HKL_mult*broad*wtk*occ*gsl_complex_abs2(c1)/UC->bohr_cellV;
 
 		  }  /*END jz->ngfftz loop*/
 		}  /*END jy->ngffty loop*/
