@@ -43,6 +43,7 @@ void find_energy_bounds(Wavefunction * WFK, EnergyStep * ESTP)
     ESTP->bandE_max = 10.0;
   }
   if (ESTP->bandE_min < -10.0) {
+
     ESTP->bandE_min = -10.0;
   }
 */

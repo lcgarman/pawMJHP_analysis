@@ -85,6 +85,7 @@ void mjhpHKL_density(NumberGrid *GRD, Wavefunction *WFK, UnitCell * UC, Symmetry
   real_grid = NULL;
   sym_real_grid = NULL;
 
+
   printf("Scanning Energy Range: %lf\t%lf\n", scanE_start, scanE_stop);
   /*Allocating for WavefunctionCoefficients*/
   real_grid = AllocateMemory_threeD_double(real_grid, ngfftx, ngffty, ngfftz);

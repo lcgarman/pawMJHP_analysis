@@ -115,6 +115,8 @@ void boxed_local(NumberGrid *GRD, Wavefunction *WFK, UnitCell *UC, BinaryGrid *B
   gsl_complex potentialE;
   double total_local;
   
+  double kx, ky, kz;
+  double mag_G;
   int Gbin;
   double Etol;
   Etol = 10.0;
@@ -168,7 +170,16 @@ void boxed_local(NumberGrid *GRD, Wavefunction *WFK, UnitCell *UC, BinaryGrid *B
 		delta_k = k1 - k2;
 		delta_l = l1 - l2;
 
-        Gbin = delta_h*delta_h + delta_k*delta_k + delta_l*delta_l;
+//        Gbin = delta_h*delta_h + delta_k*delta_k + delta_l*delta_l;
+
+        /*find the coordinates of each reflection in inverse ang*/
+		kx = delta_h*UC->ang_ax_star+delta_k*UC->ang_bx_star+delta_l*UC->ang_cx_star;
+		ky = delta_h*UC->ang_ay_star+delta_k*UC->ang_by_star+delta_l*UC->ang_cy_star;
+		kz = delta_h*UC->ang_az_star+delta_k*UC->ang_bz_star+delta_l*UC->ang_cz_star;
+        /*find magnitude of reflection*/
+		mag_G = sqrt(kx*kx + ky*ky + kz*kz);
+        if (mag_G == 0.0) Gbin = 0;
+        else Gbin = ceil(mag_G);
  
         /*make delta_h positive*/
 		if (delta_h < 0) delta_h+=ngfftx;
@@ -283,6 +294,8 @@ void boxed_nonlocal(PawAtomicData * PAW, AtomicVariables * ATM, UnitCell * UC, W
   gsl_complex nonlocalE;
   double total_nonlocalE;
 
+  double kx, ky, kz;
+  double mag_G;
   int Gbin;
   double Etol;
   Etol = 10.0;
@@ -374,7 +387,16 @@ void boxed_nonlocal(PawAtomicData * PAW, AtomicVariables * ATM, UnitCell * UC, W
 		delta_k = k1 - k2;
 		delta_l = l1 - l2;
 		
-        Gbin = delta_h*delta_h + delta_k*delta_k + delta_l*delta_l;
+//        Gbin = delta_h*delta_h + delta_k*delta_k + delta_l*delta_l;
+
+        /*find the coordinates of each reflection in inverse ang*/
+		kx = delta_h*UC->ang_ax_star+delta_k*UC->ang_bx_star+delta_l*UC->ang_cx_star;
+		ky = delta_h*UC->ang_ay_star+delta_k*UC->ang_by_star+delta_l*UC->ang_cy_star;
+		kz = delta_h*UC->ang_az_star+delta_k*UC->ang_bz_star+delta_l*UC->ang_cz_star;
+        /*find magnitude of reflection*/
+		mag_G = sqrt(kx*kx + ky*ky + kz*kz);
+        if (mag_G == 0) Gbin = 0;
+        else Gbin = ceil(mag_G);
 
 		/*continue calculation of nonlocal energy for these planewaves*/
 		for (at=0;at<natom;at++) {
