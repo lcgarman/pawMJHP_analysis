@@ -99,7 +99,7 @@ int main(int argc, char * argv[])
   read_atomic_data(&paw, &atom);
 
   Initialize_BoxedBand(&box); 
-  Box_Allocation(&box, &grid);
+  Box_Allocation(&box, &grid, &ucell);
 
   boxed_local(&grid, &wave, &ucell, &bin, &box);
 

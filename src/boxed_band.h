@@ -12,7 +12,7 @@
 
   void Initialize_BoxedBand(BoxedBand * BOX); 
 
-  void Box_Allocation(BoxedBand *BOX, NumberGrid * GRD);
+  void Box_Allocation(BoxedBand *BOX, NumberGrid * GRD, UnitCell * UC);
 
   void print_boxed_band(char filename[200], BoxedBand * BOX);
 

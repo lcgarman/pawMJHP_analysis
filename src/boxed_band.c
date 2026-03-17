@@ -21,20 +21,28 @@ void Initialize_BoxedBand(BoxedBand * BOX)
   BOX->total = NULL;
 }
 
-void Box_Allocation(BoxedBand *BOX, NumberGrid * GRD)
+void Box_Allocation(BoxedBand *BOX, NumberGrid * GRD, UnitCell * UC)
 {
   int ngfftx, ngffty, ngfftz;
-  int half_ngfftx, half_ngffty, half_ngfftz;
+  int maxH, maxK, maxL;
+  double max_kx, max_ky, max_kz;
+  double max_G;
   int max_Gbin;
 
   ngfftx = GRD->ngfftx;
   ngffty = GRD->ngffty;
   ngfftz = GRD->ngfftz;
 
-  half_ngfftx = ceil(0.5*(double)ngfftx);
-  half_ngffty = ceil(0.5*(double)ngffty);
-  half_ngfftz = ceil(0.5*(double)ngfftz);
-  max_Gbin = half_ngfftx*half_ngfftx + half_ngffty*half_ngffty + half_ngfftz*half_ngfftz; 
+  maxH = ceil(0.5*(double)ngfftx);
+  maxK = ceil(0.5*(double)ngffty);
+  maxL = ceil(0.5*(double)ngfftz);
+
+  max_kx = maxH*UC->ang_ax_star+maxK*UC->ang_bx_star+maxL*UC->ang_cx_star;
+  max_ky = maxH*UC->ang_ay_star+maxK*UC->ang_by_star+maxL*UC->ang_cy_star;
+  max_kz = maxH*UC->ang_az_star+maxK*UC->ang_bz_star+maxL*UC->ang_cz_star;
+
+  max_G = sqrt(max_kx*max_kx + max_ky*max_ky + max_kz*max_kz); 
+  max_Gbin = ceil(max_G);
   BOX->max_Gbin = max_Gbin;
 
   BOX->local = AllocateMemory_oneD_double(BOX->local, max_Gbin);
